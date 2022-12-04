@@ -1,37 +1,46 @@
 from random import randint
 from sympy import isprime
+from user import User
 
-def generate_random_number():
-    return randint(0, 100000000000)
+class Ta:
+  def __init__(self, n_users):
+    self.n_users = n_users
+    self.users = []
+    self.user_elements = []
+    self.p = self.generate_prime_number()
 
-p = generate_random_number()
-while not isprime(p):
-    p = generate_random_number()
+    self.a = randint(1, self.p - 1)
+    self.b = randint(1, self.p - 1)
+    self.c = randint(1, self.p - 1)
 
-n_users = 3
-users = []
-for i in range(n_users):
-  n = randint(1, p - 1)
-  while n in users:
-    n = randint(1, p - 1)
-  users.append(n)
+    for i in range(self.n_users):
+      rU = self.generate_user_element()
+      coef = self.generate_coef(rU)
+      
+      newUser = User(rU, coef, self.p)
+      self.users.append(newUser)
 
-coef = []
+  def generate_random_number(self):
+    return randint(0, 10000000000000000)
 
-a = randint(1, p - 1)
-b = randint(1, p - 1)
-c = randint(1, p - 1)
+  def generate_prime_number(self):
+    p = self.generate_random_number()
+    while not isprime(p):
+      p = self.generate_random_number()
+    return p
 
-for i in range(len(users)):
-  ai = (a + b * users[i]) % p
-  bi = (b + c * users[i]) % p
-  coef.append([ai, bi])
+  def generate_user_element(self):
+    rU = randint(1, self.p - 1)
+    while rU in self.user_elements:
+      rU = randint(1, self.p - 1)
+    self.user_elements.append(rU)
+    return rU
 
-def getCoef(user):
-  return coef[user]
 
-def getUser(index):
-  return users[index]
+  def generate_coef(self, rU):
+    ai = (self.a + self.b * rU) % self.p
+    bi = (self.b + self.c * rU) % self.p
+    return [ai, bi]
 
-def getPrime():
-  return p
+  def getUsers(self):
+    return self.users

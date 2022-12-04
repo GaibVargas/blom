@@ -1,13 +1,16 @@
-from ta import getCoef, getUser
-from user import getKey
+from ta import Ta
 
-user0 = getCoef(0)
-user0Value = getUser(0)
-user1 = getCoef(1)
-user1Value = getUser(1)
+trusted_authority = Ta(n_users = 3)
+users = trusted_authority.getUsers()
 
-key10 = getKey(user0Value, user1)
-key01 = getKey(user1Value, user0)
+user0 = users[0]
+user1 = users[1]
+
+rU = user0.get_user_element()
+rV = user1.get_user_element()
+
+key01 = user0.get_key(rV)
+key10 = user1.get_key(rU)
 
 print(key01)
 print(key10)
